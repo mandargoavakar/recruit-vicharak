@@ -1,0 +1,35 @@
+.SUBCKT NE555 1 2 3 4 5 6 7 8
+* Pin order: GND TRG OUT RST CV THR DIS VCC
+* Internal Resistor Divider (The "5-5-5" part)
+R1 8 5 5k
+R2 5 9 5k
+R3 9 1 5k
+
+* Comparators (Using Behavioral Voltage Sources)
+* Comp 1 checks Threshold vs Control Voltage
+B_CMP1 11 0 V = V(6) > V(5) ? 1 : 0
+* Comp 2 checks Trigger vs Divider Voltage
+B_CMP2 12 0 V = V(2) < V(9) ? 1 : 0
+
+* SR Latch (Flip-Flop) Logic
+* S_SET pulls internal node 15 High (Set)
+S_SET 8 15 12 0 SW_LOGIC
+* S_RST pulls internal node 15 Low (Reset)
+S_RST 15 1 11 0 SW_LOGIC
+* Capacitor to hold the state
+C_LATCH 15 1 1n
+R_DUMMY 15 1 100Meg
+* Switch Model for the Latch
+.MODEL SW_LOGIC SW(Vt=0.5 Vh=0.1 Ron=100 Roff=100Meg)
+
+* Output Driver (Pin 3)
+* Buffers the internal latch voltage to 12V or 0V
+B_OUT 3 0 V = V(15) > 6 ? 12 : 0
+
+* Discharge Transistor (Pin 7)
+* Logic: If Output is High, Disch is Open. If Output Low, Disch is Grounded.
+S_DIS 7 1 3 0 SW_DIS
+* Switch Logic: When V_out > 6V (High), Resistance is 100Meg (Open).
+* When V_out < 6V (Low), Resistance is 10 (Grounded).
+.MODEL SW_DIS SW(Vt=6 Vh=1 Ron=100Meg Roff=10)
+.ENDS

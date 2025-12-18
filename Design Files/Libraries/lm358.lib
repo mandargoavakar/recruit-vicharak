@@ -1,0 +1,5 @@
+.SUBCKT LM741_PWM OUT IN_NEG IN_POS VCC GND
+* Simple Comparator Model for Class D
+* Logic: If IN_POS > IN_NEG, Output = VCC-1.5. Else Output = GND.
+E_OUT OUT 0 VALUE = { IF( V(IN_POS) > V(IN_NEG), V(VCC)-1.5, V(GND) ) }
+.ENDS

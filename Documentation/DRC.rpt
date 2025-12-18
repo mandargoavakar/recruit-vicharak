@@ -1,0 +1,14 @@
+** Drc report for Class_D_Amp_Discrete.kicad_pcb **
+** Created on 2025-12-18T18:34:07+0530 **
+
+** Found 1 DRC violations **
+[silk_overlap]: Silkscreen overlap
+    Rule: board setup constraints silk; warning
+    @(206.1200 mm, 92.2700 mm): Segment of C1 on F.Silkscreen
+    @(203.5000 mm, 92.4500 mm): Reference field of C2
+
+** Found 0 unconnected pads **
+
+** Found 0 Footprint errors **
+
+** End of Report **
